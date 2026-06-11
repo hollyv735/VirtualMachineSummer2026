@@ -10,7 +10,6 @@ import com.kondra.vm.common.concurrent.VmThread;
 import com.kondra.vm.common.loader.Loader;
 import com.kondra.vm.common.memory.Memory;
 import com.kondra.vm.common.memory.MemoryMgr;
-import com.kondra.vm.common.memory.MyMemoryMgr;
 import com.kondra.vm.common.vmx.VmxException;
 import com.kondra.vm.common.vmx.VmxFile;
 

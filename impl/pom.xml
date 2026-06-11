@@ -8,7 +8,7 @@ he.org/xsd/maven-4.0.0.xsd">
     <parent>
       <groupId>com.kondra.training.vm</groupId>
       <artifactId>platform</artifactId>
-      <version>0.0.0-SNAPSHOT</version>         
+      <version>0.0.0-SNAPSHOT</version>
     </parent>
     
     <artifactId>impl</artifactId>
