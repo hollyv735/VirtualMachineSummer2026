@@ -42,4 +42,28 @@ public class Header{
     public void setEntryOffset(int entryOffset){
         this.entryOffset = entryOffset;
     }
+
+    public byte getMajor() {
+        return major;
+    }
+
+    public byte getMinor() {
+        return minor;
+    }
+
+    public short getBuildNum() {
+        return buildNum;
+    }
+
+    public void setBuildNum(short buildNum) {
+        this.buildNum = buildNum;
+    }
+
+    public void setMajor(byte major) {
+        this.major = major;
+    }
+
+    public void setMinor(byte minor) {
+        this.minor = minor;
+    }
 }

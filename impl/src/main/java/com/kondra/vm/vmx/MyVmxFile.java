@@ -62,12 +62,14 @@ public class MyVmxFile implements VmxFile {
 
     @Override
     public Version getVersion() {
-        return null;
+        return new Version((int) header.getMajor(), (int)header.getMinor(), (int)header.getBuildNum());
     }
 
     @Override
     public void setVersion(Version version) {
-
+        header.setBuildNum((short)version.getBuildNum());
+        header.setMinor((byte)version.getMinor());
+        header.setMajor((byte)version.getMajor());
     }
 
     @Override
