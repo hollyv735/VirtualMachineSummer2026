@@ -43,12 +43,12 @@ public class MyVirtualMachine implements VirtualMachine {
 
         return new MyMemoryMgr();
     }
-
+    //do this
     @Override
     public VmxFile loadVmxFile(File file) throws VmxException {
         return null;
     }
-
+    //do this
     @Override
     public VmxFile emptyVmxFile() {
         return null;

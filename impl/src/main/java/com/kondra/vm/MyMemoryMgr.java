@@ -48,7 +48,6 @@ public class MyMemoryMgr implements MemoryMgr {
     public MyMemoryMgr(){
         this.memory = null;
         this.storage = new HashMap<Integer, Node>();
-
     }
 
 
@@ -137,11 +136,9 @@ public class MyMemoryMgr implements MemoryMgr {
                 }
             }
             n = getNext(n);
+        }
+        if (best==null){throw new InsufficientMemoryException();}
 
-        }
-        if (best==null){
-            throw new InsufficientMemoryException();
-        }
         return best;
     }
 
