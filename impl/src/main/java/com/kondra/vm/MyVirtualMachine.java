@@ -12,6 +12,7 @@ import com.kondra.vm.common.memory.Memory;
 import com.kondra.vm.common.memory.MemoryMgr;
 import com.kondra.vm.common.vmx.VmxException;
 import com.kondra.vm.common.vmx.VmxFile;
+import com.kondra.vm.vmx.VmxReader;
 
 public class MyVirtualMachine implements VirtualMachine {
     private Memory systemMemory;
@@ -46,7 +47,8 @@ public class MyVirtualMachine implements VirtualMachine {
     //do this
     @Override
     public VmxFile loadVmxFile(File file) throws VmxException {
-        return null;
+        VmxReader reader = new VmxReader(file);
+        return reader.getVmxFile();
     }
     //do this
     @Override
