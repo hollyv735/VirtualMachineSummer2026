@@ -17,6 +17,7 @@ public class VmxReader {
     public VmxReader(File file){
         try {
             this.sections = new Section[4];
+            this.extensions = new ArrayList<MyVmxExt>();
             this.stream = new FileInputStream(file);
             readInt(); //magic
             this.header = readHeader();
