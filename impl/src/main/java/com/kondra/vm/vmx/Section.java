@@ -26,4 +26,8 @@ public class Section{
     public int getOffset() {
         return offset;
     }
+
+    public int getSize() {
+        return size;
+    }
 }

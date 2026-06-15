@@ -23,6 +23,9 @@ public class VmxReader {
             for(int i = 0; i<4; i++){
                 this.sections[i]=readSectionHeader();
             }
+            for(int i = 0; i<4; i++){
+                readSectionContent(this.sections[i]);
+            }
             for(int i = 0; i<header.getExtCount(); i++){
                 extensions.add(readExtension());
             }
@@ -118,6 +121,15 @@ public class VmxReader {
         int sOffset = readInt();
         int sSize = readInt();
         return new Section(sOffset, sSize);
+    }
+
+    private void readSectionContent(Section s){
+        int sSize = s.getSize();
+        byte[] content = new byte[sSize];
+        for(int i = 0; i<sSize; i++){
+            content[i] = readByte();
+        }
+        s.setSection(content);
     }
 
 
