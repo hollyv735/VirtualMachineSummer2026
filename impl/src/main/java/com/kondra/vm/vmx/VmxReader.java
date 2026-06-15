@@ -1,5 +1,7 @@
 package com.kondra.vm.vmx;
 
+import com.kondra.vm.common.vmx.VmxExt;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +10,7 @@ public class VmxReader {
     private FileInputStream stream;
     private Header header;
     private Section[] sections;
-    private List<MyVmxExt> extensions;
+    private List<VmxExt> extensions;
 
 
 
@@ -17,7 +19,7 @@ public class VmxReader {
     public VmxReader(File file){
         try {
             this.sections = new Section[4];
-            this.extensions = new ArrayList<MyVmxExt>();
+            this.extensions = new ArrayList<VmxExt>();
             this.stream = new FileInputStream(file);
             readInt(); //magic
             this.header = readHeader();
@@ -46,7 +48,7 @@ public class VmxReader {
         return sections;
     }
 
-    public List<MyVmxExt> getExtensions() {
+    public List<VmxExt> getExtensions() {
         return extensions;
     }
 

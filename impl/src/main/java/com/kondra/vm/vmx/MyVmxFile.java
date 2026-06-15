@@ -12,9 +12,9 @@ import java.util.List;
 public class MyVmxFile implements VmxFile {
     private Header header;
     private Section[] sections;
-    private List<MyVmxExt> extensions;
+    private List<VmxExt> extensions;
 
-    public MyVmxFile(Header header, Section[] sections, List<MyVmxExt> extensions){
+    public MyVmxFile(Header header, Section[] sections, List<VmxExt> extensions){
         this.header = header;
         this.sections = sections;
         this.extensions = extensions;
@@ -29,13 +29,7 @@ public class MyVmxFile implements VmxFile {
 
     @Override
     public byte[] getSection(int i) {
-        Section temp = null;
-        for (Section s: sections){
-            if (s.getOffset()==i){
-                temp = s;
-            }
-        }
-        return temp.getSection();
+        return sections[i].getSection();
     }
 
     @Override
@@ -51,8 +45,8 @@ public class MyVmxFile implements VmxFile {
 
     @Override
     public List<VmxExt> getExtensions() {
-        //return extensions;
-        return null;
+        return extensions;
+        //return null;
     }
 
     @Override
