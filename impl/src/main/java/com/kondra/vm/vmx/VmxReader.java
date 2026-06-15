@@ -107,7 +107,7 @@ public class VmxReader {
         int sSize = readInt();
         Section s = new Section(sOffset, sSize);
         byte[] content = new byte[sSize];
-        for(int i = 0; i<sSize-2; i++){
+        for(int i = 0; i<sSize; i++){
             content[i] = readByte();
         }
         s.setSection(content);
