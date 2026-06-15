@@ -21,7 +21,7 @@ public class VmxReader {
             readInt(); //magic
             this.header = readHeader();
             for(int i = 0; i<4; i++){
-                this.sections[i]=readSection();
+                this.sections[i]=readSectionHeader();
             }
             for(int i = 0; i<header.getExtCount(); i++){
                 extensions.add(readExtension());
@@ -112,6 +112,12 @@ public class VmxReader {
         }
         s.setSection(content);
         return s;
+    }
+
+    private Section readSectionHeader(){
+        int sOffset = readInt();
+        int sSize = readInt();
+        return new Section(sOffset, sSize);
     }
 
 
