@@ -47,7 +47,6 @@ public class VmxReader {
     }
 
 
-
     private byte readByte(){
         try {
             return (byte)stream.read();

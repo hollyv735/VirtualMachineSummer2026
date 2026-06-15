@@ -79,4 +79,5 @@ public class MyVirtualMachine implements VirtualMachine {
     @Override
     public void reset() {
     }
+    
 }

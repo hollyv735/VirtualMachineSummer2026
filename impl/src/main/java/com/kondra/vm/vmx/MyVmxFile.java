@@ -57,7 +57,7 @@ public class MyVmxFile implements VmxFile {
 
     @Override
     public VmxExt getExtension(int i) {
-        return null;
+        return extensions.get(i);
     }
 
     @Override
@@ -71,6 +71,8 @@ public class MyVmxFile implements VmxFile {
         header.setMinor((byte)version.getMinor());
         header.setMajor((byte)version.getMajor());
     }
+
+
 
     @Override
     public int getFlags() {
