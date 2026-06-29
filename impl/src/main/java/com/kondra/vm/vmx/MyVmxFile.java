@@ -21,10 +21,13 @@ public class MyVmxFile implements VmxFile {
     }
     @Override
     public void write(File file) throws VmxException {
+        VmxWriter writer = new VmxWriter(this, file);
+        /*
         VmxReader reader = new VmxReader(file);
         this.header = reader.getHeader();
         this.sections = reader.getSections();
         this.extensions = reader.getExtensions();
+         */
     }
 
     @Override
@@ -46,7 +49,6 @@ public class MyVmxFile implements VmxFile {
     @Override
     public List<VmxExt> getExtensions() {
         return extensions;
-        //return null;
     }
 
     @Override
@@ -86,5 +88,12 @@ public class MyVmxFile implements VmxFile {
     @Override
     public void setEntryOffset(int i) {
         header.setEntryOffset(i);
+    }
+
+    public Header getHeader(){
+        return header;
+    }
+    public Section[] getSections(){
+        return sections;
     }
 }

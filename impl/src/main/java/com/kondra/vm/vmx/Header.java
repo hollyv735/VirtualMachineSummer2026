@@ -66,4 +66,32 @@ public class Header{
     public void setMinor(byte minor) {
         this.minor = minor;
     }
+
+    public byte[] writeHeader(){
+        byte[] header = new byte[24];
+        //magic header[0-7]
+        header[8] = extCount;
+        header[9] = vmxVersion;
+        header[10] = flags;
+        header[11] = reserved;
+        header[12] = major;
+        header[13] = minor;
+        byte[] buildNumTemp = VmxWriter.writeShort(buildNum);
+        for(int i = 0; i<2; i++){
+            header[14+i] = buildNumTemp[i];
+        }
+        buildNumTemp = VmxWriter.writeInt(fileSize);
+        for(int i = 0; i<4; i++){
+            header[16+i] = buildNumTemp[i];
+        }
+        buildNumTemp = VmxWriter.writeInt(programSize);
+        for(int i = 0; i<4; i++){
+            header[20+i] = buildNumTemp[i];
+        }
+        buildNumTemp = VmxWriter.writeInt(entryOffset);
+        for(int i = 0; i<4; i++){
+            header[24+i] = buildNumTemp[i];
+        }
+        return header;
+    }
 }

@@ -30,4 +30,23 @@ public class Section{
     public int getSize() {
         return size;
     }
+
+    public byte[] writeSectionHeader() {
+        byte[] bytes = new byte[8];
+        byte[] temp = VmxWriter.writeInt(offset);
+        for (int i = 0; i < 4; i++) {
+            bytes[i] = temp[i];
+        }
+        temp = VmxWriter.writeInt(size);
+        for (int i = 0; i < 4; i++) {
+            bytes[4 + i] = temp[i];
+
+        }
+        return bytes;
+    }
+
+    public byte[] writeSection(){
+        return section;
+    }
+
 }

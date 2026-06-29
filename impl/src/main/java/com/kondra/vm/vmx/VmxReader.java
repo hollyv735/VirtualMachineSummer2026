@@ -26,11 +26,11 @@ public class VmxReader {
             for(int i = 0; i<4; i++){
                 this.sections[i]=readSectionHeader();
             }
-            for(int i = 0; i<4; i++){
-                readSectionContent(this.sections[i]);
-            }
             for(int i = 0; i<header.getExtCount(); i++){
                 extensions.add(readExtension());
+            }
+            for(int i = 0; i<4; i++){
+                readSectionContent(this.sections[i]);
             }
 
         }catch(FileNotFoundException ex){
@@ -61,6 +61,9 @@ public class VmxReader {
             return -1;
         }
     }
+
+
+
     private short readShort(){
         try {
             int temp = (stream.read())& 0xFF;
