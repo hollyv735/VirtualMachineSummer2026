@@ -29,10 +29,15 @@ public class VmxWriter {
             for(int i = 0; i<4; i++){
                 stream.write(sections[i].writeSectionHeader());
             }
-            for(int i = 0; i<4; i++){
+            for(int i = 0; i<header.getExtCount(); i++){
+                stream.write(((MyVmxExt)extensions.get(i)).writeExtHeader());
+            }
+            for(int i = 0; i<3; i++){
                 stream.write(sections[i].writeSection());
             }
-            //write extensions
+            for(int i = 0; i<header.getExtCount(); i++){
+                stream.write(((MyVmxExt)extensions.get(i)).writeExtContent());
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -50,11 +55,11 @@ public class VmxWriter {
     }
 
     static public byte[] writeInt(int i){
-        byte[] bytes = new byte[2];
+        byte[] bytes = new byte[4];
         bytes[0] = (byte) i;
         bytes[1] = (byte)(i>>>8);
-        bytes[3] = (byte)(i>>>16);
-        bytes[4] = (byte)(i>>>24);
+        bytes[2] = (byte)(i>>>16);
+        bytes[3] = (byte)(i>>>24);
         return bytes;
     }
 

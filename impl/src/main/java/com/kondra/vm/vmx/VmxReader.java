@@ -21,7 +21,6 @@ public class VmxReader {
             this.sections = new Section[4];
             this.extensions = new ArrayList<VmxExt>();
             this.stream = new FileInputStream(file);
-            readInt(); //magic
             this.header = readHeader();
             for(int i = 0; i<4; i++){
                 this.sections[i]=readSectionHeader();
@@ -29,12 +28,23 @@ public class VmxReader {
             for(int i = 0; i<header.getExtCount(); i++){
                 extensions.add(readExtension());
             }
-            for(int i = 0; i<4; i++){
+            for(int i = 0; i<3; i++){
                 readSectionContent(this.sections[i]);
+            }
+            for(int i = 0; i<header.getExtCount(); i++){
+                readExtensionContent(extensions.get(i));
             }
 
         }catch(FileNotFoundException ex){
         }
+    }
+
+    private void readExtensionContent(VmxExt vmxExt) {
+        byte[] ext = new byte[((MyVmxExt)vmxExt).getSize()];
+        for(int i = 0; i < ((MyVmxExt)vmxExt).getSize(); i++){
+            ext[i] = readByte();
+        }
+        ((MyVmxExt) vmxExt).setExt(ext);
     }
 
     public MyVmxFile getVmxFile(){
@@ -44,6 +54,7 @@ public class VmxReader {
     public Header getHeader(){
         return header;
     }
+
     public Section[] getSections(){
         return sections;
     }
@@ -88,7 +99,7 @@ public class VmxReader {
     }
 
     private Header readHeader(){
-        return new Header(readByte(),//extCount
+        return new Header(readInt(), readByte(),//extCount
                 readByte(), //vmx variation
                 readByte(), //flags
                 readByte(), //reserved

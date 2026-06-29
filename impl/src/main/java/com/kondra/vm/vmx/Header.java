@@ -1,6 +1,7 @@
 package com.kondra.vm.vmx;
 
 public class Header{
+    private int magic;
     private byte extCount;
     private byte vmxVersion;
     private byte flags;
@@ -12,8 +13,9 @@ public class Header{
     private int programSize;
     private int entryOffset;
 
-    public Header(byte extCount, byte vmxVersion, byte flags, byte reserved, byte major, byte minor, short buildNum,
+    public Header(int magic, byte extCount, byte vmxVersion, byte flags, byte reserved, byte major, byte minor, short buildNum,
                   int fileSize, int programSize, int entryOffset){
+        this.magic = magic;
         this.extCount = extCount;
         this.vmxVersion = vmxVersion;
         this.flags = flags;
@@ -69,28 +71,32 @@ public class Header{
 
     public byte[] writeHeader(){
         byte[] header = new byte[24];
-        //magic header[0-7]
-        header[8] = extCount;
-        header[9] = vmxVersion;
-        header[10] = flags;
-        header[11] = reserved;
-        header[12] = major;
-        header[13] = minor;
-        byte[] buildNumTemp = VmxWriter.writeShort(buildNum);
+        //magic header[0-3]
+        byte[] temp = VmxWriter.writeInt(magic);
+        for(int i = 0; i<4; i++){
+            header[i] = temp[i];
+        }
+        header[4] = extCount;
+        header[5] = vmxVersion;
+        header[6] = flags;
+        header[7] = reserved;
+        header[8] = major;
+        header[9] = minor;
+        temp = VmxWriter.writeShort(buildNum);
         for(int i = 0; i<2; i++){
-            header[14+i] = buildNumTemp[i];
+            header[10+i] = temp[i];
         }
-        buildNumTemp = VmxWriter.writeInt(fileSize);
+        temp = VmxWriter.writeInt(fileSize);
         for(int i = 0; i<4; i++){
-            header[16+i] = buildNumTemp[i];
+            header[12+i] = temp[i];
         }
-        buildNumTemp = VmxWriter.writeInt(programSize);
+        temp = VmxWriter.writeInt(programSize);
         for(int i = 0; i<4; i++){
-            header[20+i] = buildNumTemp[i];
+            header[16+i] = temp[i];
         }
-        buildNumTemp = VmxWriter.writeInt(entryOffset);
+        temp = VmxWriter.writeInt(entryOffset);
         for(int i = 0; i<4; i++){
-            header[24+i] = buildNumTemp[i];
+            header[20+i] = temp[i];
         }
         return header;
     }
