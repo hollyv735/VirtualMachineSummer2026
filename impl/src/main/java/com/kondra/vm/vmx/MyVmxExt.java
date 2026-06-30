@@ -42,7 +42,7 @@ public class MyVmxExt implements VmxExt {
         for(int i = 0; i<4; i++){
             ext[4+i] = temp[i];
         }
-        temp = VmxWriter.writeInt(offset);
+        temp = VmxWriter.writeInt(size);
         for(int i = 0; i<4; i++){
             ext[8+i] = temp[i];
         }

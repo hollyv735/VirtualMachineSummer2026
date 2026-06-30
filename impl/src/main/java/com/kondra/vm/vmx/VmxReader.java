@@ -31,6 +31,7 @@ public class VmxReader {
             for(int i = 0; i<3; i++){
                 readSectionContent(this.sections[i]);
             }
+            this.sections[3].setSection(new byte[sections[3].getSize()]);
             for(int i = 0; i<header.getExtCount(); i++){
                 readExtensionContent(extensions.get(i));
             }
