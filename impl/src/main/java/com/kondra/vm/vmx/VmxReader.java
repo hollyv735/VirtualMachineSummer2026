@@ -114,12 +114,19 @@ public class VmxReader {
     }
 
     private MyVmxExt readExtension(){
-        MyVmxExt ex =  new MyVmxExt(readByte(), //type
-                readByte(), //flags
-                readShort(), //reserved
-                readInt(), //offset
-                readInt()); //size
-        return ex;
+        byte type = readByte();
+        switch(type){
+            case(VmxExt.TYPE_RELOC):
+                MyVmxExt ex =  new MyRelocationExt(type, //type
+                        readByte(), //flags
+                        readShort(), //reserved
+                        readInt(), //offset
+                        readInt()); //size
+                return ex;
+
+        }
+        return null;
+
     }
 
 
