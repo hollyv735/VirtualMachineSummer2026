@@ -1,0 +1,3 @@
+com/kondra/vm/MyVirtualMachine.class
+com/kondra/vm/MyMemory.class
+com/kondra/vm/MyCPU.class

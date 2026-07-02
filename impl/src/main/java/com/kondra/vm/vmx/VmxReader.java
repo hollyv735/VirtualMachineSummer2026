@@ -1,6 +1,8 @@
 package com.kondra.vm.vmx;
 
 import com.kondra.vm.common.vmx.VmxExt;
+import com.kondra.vm.vmx.ext.MyRelocationExt;
+import com.kondra.vm.vmx.ext.MyVmxExt;
 
 import java.io.*;
 import java.util.ArrayList;

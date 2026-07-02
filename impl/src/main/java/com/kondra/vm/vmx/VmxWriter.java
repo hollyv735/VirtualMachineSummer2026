@@ -1,10 +1,9 @@
 package com.kondra.vm.vmx;
 
 import com.kondra.vm.common.vmx.VmxExt;
+import com.kondra.vm.vmx.ext.MyVmxExt;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.List;
 

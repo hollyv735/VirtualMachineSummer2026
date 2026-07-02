@@ -1,6 +1,7 @@
-package com.kondra.vm.vmx;
+package com.kondra.vm.vmx.ext;
 
 import com.kondra.vm.common.vmx.VmxExt;
+import com.kondra.vm.vmx.VmxWriter;
 
 public class MyVmxExt implements VmxExt {
         private byte type;

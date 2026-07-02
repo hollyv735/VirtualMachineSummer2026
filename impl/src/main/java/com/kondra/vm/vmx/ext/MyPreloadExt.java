@@ -1,12 +1,14 @@
-package com.kondra.vm.vmx;
+package com.kondra.vm.vmx.ext;
 
-import com.kondra.vm.common.vmx.ext.Relocation;
-import com.kondra.vm.common.vmx.ext.RelocationExt;
+import com.kondra.vm.common.vmx.VmxExt;
+import com.kondra.vm.common.vmx.ext.PreloadExt;
+import com.kondra.vm.common.vmx.ext.SymbolTableExt;
+import com.kondra.vm.vmx.VmxWriter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyRelocationExt extends MyVmxExt implements RelocationExt{
+public class MyPreloadExt extends MyVmxExt implements PreloadExt {
     //from MyVmxExt
     private byte type;
     private byte flags;
@@ -15,7 +17,7 @@ public class MyRelocationExt extends MyVmxExt implements RelocationExt{
     private int size;
     private byte[] ext;
 
-    public MyRelocationExt(byte type, byte flags, short reserved, int offset, int size) {
+    public MyPreloadExt(byte type, byte flags, short reserved, int offset, int size) {
         super(type, flags, reserved, offset, size);
         this.type = type;
         this.flags = flags;
@@ -23,24 +25,29 @@ public class MyRelocationExt extends MyVmxExt implements RelocationExt{
         this.offset = offset;
         this.size = size;
     }
-
-
     @Override
-    public List<Relocation> getRelocations(int i) {
-        int offset = readInt(8*i);
-        int size = readInt((8*i)+4);
-        List<Relocation> relocations = new ArrayList<>();
-
-        for(int j = offset; j< (size+offset); j = j+8){
-            relocations.add(getReloc(j));
+    public void addSymbolOffset(int offset) {
+        size = size + 4;
+        byte[] newExt = new byte[size];
+        for (int i = 0; i < (size-4); i++) {
+            newExt[i] = ext[i];
         }
+        byte[] bytes = VmxWriter.writeInt(offset);
+        for(int i = 0; i<4; i++){
+            newExt[size-4+i] = bytes[i];
+        }
+        ext = newExt;
 
-        return relocations;
     }
 
+
     @Override
-    public int getType() {
-        return MyVmxExt.TYPE_RELOC;
+    public List<Integer> getSymbolOffsets() {
+        List<Integer> l = new ArrayList<>();
+        for(int i = 0; i<(size); i=i+4){
+            l.add(readInt(ext[i]));
+        }
+        return l;
     }
 
 
@@ -51,18 +58,13 @@ public class MyRelocationExt extends MyVmxExt implements RelocationExt{
         temp |= ((ext[i+3])& 0xFF) <<24;
         return (int) temp;
     }
-    private short readShort(int i){
-        int temp = (ext[i])& 0xFF;
-        temp |= ((ext[i+1])& 0xFF) <<8;
-        return (short) temp;
-    }
 
-    private MyRelocation getReloc(int i){
-        byte[] bytes = new byte[8];
-        for (int j = 0; j<8; j++){
-            bytes[j] = ext[i+j];
-        }
-        return new MyRelocation(bytes);
+
+    //from MyVmxExt
+
+    @Override
+    public int getType() {
+        return VmxExt.TYPE_PRELOAD;
     }
 
     @Override
@@ -97,6 +99,5 @@ public class MyRelocationExt extends MyVmxExt implements RelocationExt{
     public byte[] writeExtContent(){
         return ext;
     }
-
 
 }

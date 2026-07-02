@@ -1,4 +1,4 @@
-package com.kondra.vm.vmx;
+package com.kondra.vm.vmx.ext;
 
 import com.kondra.vm.common.vmx.ext.Relocation;
 
