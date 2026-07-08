@@ -69,6 +69,7 @@ public class MyRelocationExt extends MyVmxExt implements RelocationExt{
     @Override
     public void setExt(byte[] ext){
         this.ext = ext;
+        size = ext.length;
     }
     @Override
     public int getSize() {

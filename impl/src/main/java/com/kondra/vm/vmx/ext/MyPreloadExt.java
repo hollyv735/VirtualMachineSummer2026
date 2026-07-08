@@ -6,6 +6,7 @@ import com.kondra.vm.common.vmx.ext.SymbolTableExt;
 import com.kondra.vm.vmx.VmxWriter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MyPreloadExt extends MyVmxExt implements PreloadExt {
@@ -16,6 +17,7 @@ public class MyPreloadExt extends MyVmxExt implements PreloadExt {
     private int offset;
     private int size;
     private byte[] ext;
+    private HashMap st;
 
     public MyPreloadExt(byte type, byte flags, short reserved, int offset, int size) {
         super(type, flags, reserved, offset, size);
@@ -59,6 +61,19 @@ public class MyPreloadExt extends MyVmxExt implements PreloadExt {
         return (int) temp;
     }
 
+    public void printSymbols(){
+        List<Integer> list = getSymbolOffsets();
+        if(!list.isEmpty()) {
+            for (int i = (int) ((ArrayList)list).get(0); i < size; i++) {
+                if (list.contains(i)) {
+                    System.out.println(ext[i]);
+                } else {
+                    System.out.print(ext[i]);
+                }
+            }
+        }
+    }
+
 
     //from MyVmxExt
 
@@ -70,6 +85,7 @@ public class MyPreloadExt extends MyVmxExt implements PreloadExt {
     @Override
     public void setExt(byte[] ext){
         this.ext = ext;
+
     }
     @Override
     public int getSize() {

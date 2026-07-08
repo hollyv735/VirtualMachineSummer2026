@@ -1,8 +1,7 @@
 package com.kondra.vm.vmx;
 
 import com.kondra.vm.common.vmx.VmxExt;
-import com.kondra.vm.vmx.ext.MyRelocationExt;
-import com.kondra.vm.vmx.ext.MyVmxExt;
+import com.kondra.vm.vmx.ext.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -39,6 +38,7 @@ public class VmxReader {
             }
 
         }catch(FileNotFoundException ex){
+            System.out.print("file not found");
         }
     }
 
@@ -120,6 +120,44 @@ public class VmxReader {
         switch(type){
             case(VmxExt.TYPE_RELOC):
                 MyVmxExt ex =  new MyRelocationExt(type, //type
+                        readByte(), //flags
+                        readShort(), //reserved
+                        readInt(), //offset
+                        readInt()); //size
+                return ex;
+
+            case(VmxExt.TYPE_SYMTAB):
+                ex =  new MySymbolTableExt(type, //type
+                        readByte(), //flags
+                        readShort(), //reserved
+                        readInt(), //offset
+                        readInt()); //size
+                return ex;
+
+            case(VmxExt.TYPE_PRELOAD):
+                ex =  new MyPreloadExt(type, //type
+                        readByte(), //flags
+                        readShort(), //reserved
+                        readInt(), //offset
+                        readInt()); //size
+                return ex;
+
+            case(VmxExt.TYPE_EXPORT):
+                ex =  new MyExportExt(type, //type
+                        readByte(), //flags
+                        readShort(), //reserved
+                        readInt(), //offset
+                        readInt()); //size
+                return ex;
+            case(VmxExt.TYPE_LABEL):
+                ex =  new MyRelocationExt(type, //type
+                        readByte(), //flags
+                        readShort(), //reserved
+                        readInt(), //offset
+                        readInt()); //size
+                return ex;
+            case(VmxExt.TYPE_AFFINITY):
+                ex =  new MyAffinityExt(type, //type
                         readByte(), //flags
                         readShort(), //reserved
                         readInt(), //offset

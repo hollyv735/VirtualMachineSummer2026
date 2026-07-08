@@ -96,4 +96,5 @@ public class MyVmxFile implements VmxFile {
     public Section[] getSections(){
         return sections;
     }
+
 }

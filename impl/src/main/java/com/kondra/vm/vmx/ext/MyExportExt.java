@@ -25,6 +25,7 @@ public class MyExportExt extends MyVmxExt implements ExportExt {
         this.reserved = reserved;
         this.offset = offset;
         this.size = size;
+
     }
 
     @Override
