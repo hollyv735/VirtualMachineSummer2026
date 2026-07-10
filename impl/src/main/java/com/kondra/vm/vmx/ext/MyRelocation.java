@@ -34,6 +34,10 @@ public class MyRelocation implements Relocation {
 
     }
 
+    public byte[] getBytes(){
+        return bytes;
+    }
+
     @Override
     public int getType() {
         return type;

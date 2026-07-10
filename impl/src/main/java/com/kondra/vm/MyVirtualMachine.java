@@ -12,7 +12,7 @@ import com.kondra.vm.common.memory.Memory;
 import com.kondra.vm.common.memory.MemoryMgr;
 import com.kondra.vm.common.vmx.VmxException;
 import com.kondra.vm.common.vmx.VmxFile;
-import com.kondra.vm.vmx.VmxReader;
+import com.kondra.vm.vmx.readers.VmxReader;
 
 public class MyVirtualMachine implements VirtualMachine {
     private Memory systemMemory;

@@ -1,31 +1,64 @@
 package com.kondra.vm.vmx.ext;
 
+import com.kondra.vm.common.vmx.VmxExt;
 import com.kondra.vm.common.vmx.ext.Relocation;
 import com.kondra.vm.common.vmx.ext.RelocationExt;
-import com.kondra.vm.vmx.VmxWriter;
+import com.kondra.vm.vmx.writers.VmxWriter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyRelocationExt extends MyVmxExt implements RelocationExt{
-    //from MyVmxExt
-    private byte type;
+public class MyRelocationExt implements RelocationExt {
     private byte flags;
-    private short reserved;
-    private int offset;
-    private int size;
-    private byte[] ext;
+    List<Relocation> textRelocations;
+    List<Relocation> rodataRelocations;
+    List<Relocation> dataRelocations;
+    List<Relocation> bssRelocations;
 
-    public MyRelocationExt(byte type, byte flags, short reserved, int offset, int size) {
-        super(type, flags, reserved, offset, size);
-        this.type = type;
+
+    public MyRelocationExt(byte flags) {
         this.flags = flags;
-        this.reserved = reserved;
-        this.offset = offset;
-        this.size = size;
     }
 
+    @Override
+    public List<Relocation> getRelocations(int section) {
+        switch(section){
+            case(0):
+                return textRelocations;
+            case(1):
+                return rodataRelocations;
+            case(2):
+                return dataRelocations;
+            case(3):
+                return bssRelocations;
+        }
+        return null;
+    }
 
+    @Override
+    public int getType() {
+        return VmxExt.TYPE_RELOC;
+    }
+
+    public void setRelocations(List<Relocation> relocations, int section){
+        switch(section){
+            case(0):
+                textRelocations = relocations;
+            case(1):
+                rodataRelocations = relocations;
+            case(2):
+                dataRelocations = relocations;
+            case(3):
+                bssRelocations = relocations;
+        }
+    }
+
+    public byte getFlags(){
+        return flags;
+    }
+}
+
+/*
     @Override
     public List<Relocation> getRelocations(int i) {
         int offset = readInt(8*i);
@@ -102,3 +135,5 @@ public class MyRelocationExt extends MyVmxExt implements RelocationExt{
 
 
 }
+
+ */

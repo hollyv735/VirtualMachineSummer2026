@@ -4,9 +4,9 @@ import com.kondra.vm.common.Version;
 import com.kondra.vm.common.vmx.VmxException;
 import com.kondra.vm.common.vmx.VmxExt;
 import com.kondra.vm.common.vmx.VmxFile;
+import com.kondra.vm.vmx.writers.VmxWriter;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyVmxFile implements VmxFile {
@@ -21,13 +21,9 @@ public class MyVmxFile implements VmxFile {
     }
     @Override
     public void write(File file) throws VmxException {
-        VmxWriter writer = new VmxWriter(this, file);
-        /*
-        VmxReader reader = new VmxReader(file);
-        this.header = reader.getHeader();
-        this.sections = reader.getSections();
-        this.extensions = reader.getExtensions();
-         */
+        VmxWriter writer = new VmxWriter(this);
+        writer.write(file);
+
     }
 
     @Override
@@ -37,13 +33,7 @@ public class MyVmxFile implements VmxFile {
 
     @Override
     public void setSection(int i, byte[] bytes) {
-        int temp = 4;
-        for (int j = 0; j<4; j++){
-            if (sections[i].getOffset()==i){
-                temp = j;
-            }
-        }
-        sections[temp] = new Section(i, bytes);
+        sections[i].setSection(bytes);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.kondra.vm.vmx.ext;
 
 import com.kondra.vm.common.vmx.ext.Affinity;
-
+/*
 public class MyAffinity implements Affinity {
     private int major;
     private int minor;
@@ -43,3 +43,5 @@ public class MyAffinity implements Affinity {
         this.offset = offset;
     }
 }
+
+ */

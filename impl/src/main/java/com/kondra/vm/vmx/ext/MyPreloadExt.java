@@ -2,13 +2,12 @@ package com.kondra.vm.vmx.ext;
 
 import com.kondra.vm.common.vmx.VmxExt;
 import com.kondra.vm.common.vmx.ext.PreloadExt;
-import com.kondra.vm.common.vmx.ext.SymbolTableExt;
-import com.kondra.vm.vmx.VmxWriter;
+import com.kondra.vm.vmx.writers.VmxWriter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
+/*
 public class MyPreloadExt extends MyVmxExt implements PreloadExt {
     //from MyVmxExt
     private byte type;
@@ -117,3 +116,5 @@ public class MyPreloadExt extends MyVmxExt implements PreloadExt {
     }
 
 }
+
+ */

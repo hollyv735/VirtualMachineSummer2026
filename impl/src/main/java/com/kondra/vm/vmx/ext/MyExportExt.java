@@ -3,12 +3,11 @@ package com.kondra.vm.vmx.ext;
 import com.kondra.vm.common.vmx.VmxExt;
 import com.kondra.vm.common.vmx.ext.Export;
 import com.kondra.vm.common.vmx.ext.ExportExt;
-import com.kondra.vm.common.vmx.ext.LabelExt;
-import com.kondra.vm.vmx.VmxWriter;
+import com.kondra.vm.vmx.writers.VmxWriter;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*
 public class MyExportExt extends MyVmxExt implements ExportExt {
     //from MyVmxExt
     private byte type;
@@ -87,3 +86,5 @@ public class MyExportExt extends MyVmxExt implements ExportExt {
     }
 
 }
+
+ */
