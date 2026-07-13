@@ -2,7 +2,7 @@ package com.kondra.vm.vmx.ext;
 
 import com.kondra.vm.common.vmx.ext.Export;
 import com.kondra.vm.common.vmx.ext.ExportExt;
-/*
+
 public class MyExport implements Export {
     private int symbolOffset;
     private int section;
@@ -46,4 +46,4 @@ public class MyExport implements Export {
     }
 }
 
- */
+

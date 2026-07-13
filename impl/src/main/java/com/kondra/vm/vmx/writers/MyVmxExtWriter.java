@@ -2,9 +2,7 @@ package com.kondra.vm.vmx.writers;
 
 import com.kondra.vm.common.vmx.VmxExt;
 import com.kondra.vm.common.vmx.VmxFile;
-import com.kondra.vm.vmx.ext.MyRelocation;
-import com.kondra.vm.vmx.ext.MyRelocationExt;
-import com.kondra.vm.vmx.ext.MySymbolTableExt;
+import com.kondra.vm.vmx.ext.*;
 import com.kondra.vm.vmx.readers.MySymbolTableExtReader;
 
 public class MyVmxExtWriter {
@@ -66,7 +64,9 @@ public class MyVmxExtWriter {
             case(VmxExt.TYPE_EXPORT):
 
             case(VmxExt.TYPE_LABEL):
-
+                flags = ((MyPreloadExt)vmxExt).getFlags();
+                header[1] = flags;
+                break;
             case(VmxExt.TYPE_AFFINITY):
         }
 
@@ -90,30 +90,11 @@ public class MyVmxExtWriter {
             case(VmxExt.TYPE_EXPORT):
 
             case(VmxExt.TYPE_LABEL):
+                return (new MyLabelExtWriter(vmxExt)).writeContent();
 
             case(VmxExt.TYPE_AFFINITY):
         }
         return null;
     }
-/*
-    public byte[] writeExtHeader(){
-        byte[] ext = new byte[12];
-        ext[0] = type;
-        ext[1] = flags;
-        byte[] temp = VmxWriter.writeShort(reserved);
-        for(int i = 0; i<2; i++){
-            ext[2+i] = temp[i];
-        }
-        temp = VmxWriter.writeInt(offset);
-        for(int i = 0; i<4; i++){
-            ext[4+i] = temp[i];
-        }
-        temp = VmxWriter.writeInt(size);
-        for(int i = 0; i<4; i++){
-            ext[8+i] = temp[i];
-        }
-        return ext;
-    }
 
- */
 }
