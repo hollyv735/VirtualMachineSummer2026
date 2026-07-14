@@ -1,9 +1,7 @@
 package com.kondra.vm.vmx.readers;
 
 import com.kondra.vm.common.vmx.VmxExt;
-import com.kondra.vm.vmx.ext.MyLabelExt;
-import com.kondra.vm.vmx.ext.MyRelocationExt;
-import com.kondra.vm.vmx.ext.MySymbolTableExt;
+import com.kondra.vm.vmx.ext.*;
 import com.kondra.vm.vmx.writers.MySymbolTableExtWriter;
 import com.kondra.vm.vmx.writers.MyVmxExtWriter;
 import com.kondra.vm.vmx.writers.VmxWriter;
@@ -17,12 +15,13 @@ public class MyVmxExtReader {
             case(VmxExt.TYPE_SYMTAB):
                 return new MySymbolTableExt(flags);
             case(VmxExt.TYPE_PRELOAD):
-
+                return new MyPreloadExt(flags);
             case(VmxExt.TYPE_EXPORT):
-
+                return new MyExportExt(flags);
             case(VmxExt.TYPE_LABEL):
                 return new MyLabelExt(flags);
             case(VmxExt.TYPE_AFFINITY):
+                return new MyAffinityExt(flags);
         }
         return null;
     }

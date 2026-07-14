@@ -11,7 +11,7 @@ public class MyLabelExtWriter extends MyVmxExtWriter{
     private VmxExt vmxExt;
     public MyLabelExtWriter(VmxExt vmxExt) {
         super(vmxExt);
-        vmxExt = vmxExt;
+        this.vmxExt = vmxExt;
     }
     @Override
     public byte[] writeContent(){
@@ -19,7 +19,7 @@ public class MyLabelExtWriter extends MyVmxExtWriter{
         long time = (((MyLabelExt)vmxExt).getTimestamp()).getTime();
         writeInt(bytes, 0, (int)(time/1000));
         byte[] string = ((MyLabelExt)vmxExt).getLabel().getBytes();
-        for(int i = 0; i<string.length; i++){
+        for(int i = 0; (i<32); i++){
             bytes[4+i] = string[i];
         }
         return bytes;

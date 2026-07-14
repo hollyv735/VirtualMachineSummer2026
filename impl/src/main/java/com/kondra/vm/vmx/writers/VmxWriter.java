@@ -28,22 +28,20 @@ public class VmxWriter {
         this.sections = vmxFile.getSections();
         this.extensions = vmxFile.getExtensions();
         this.header = vmxFile.getHeader();
-        this.file = file;
         int numExt = extensions.size();
         secWriters = new ArrayList<>();
         extWriters = new ArrayList<>();
         int fileSize;
         int programSize = 0;
-        int entryOffset = header.getEntryOffset();
         for (int i = 0; i < 3; i++) {
             SectionWriter secWriter = new SectionWriter(sections[i]);
-            secWriter.setOffset(programSize + entryOffset);
+            secWriter.setOffset(programSize);
             programSize = programSize + secWriter.getSize();
             secWriters.add(secWriter);
         }
         //bss
         SectionWriter secWriter = new SectionWriter(sections[3]);
-        secWriter.setOffset(programSize + entryOffset);
+        secWriter.setOffset(programSize);
         secWriters.add(secWriter);
 
         int extOffset = programSize;

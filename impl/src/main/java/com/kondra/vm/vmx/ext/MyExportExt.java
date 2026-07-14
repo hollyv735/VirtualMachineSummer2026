@@ -11,7 +11,7 @@ public class MyExportExt implements ExportExt {
     private byte flags;
     List<Export> exports;
 
-    public MyExportExt(byte type, byte flags, short reserved, int offset, int size) {
+    public MyExportExt(byte flags) {
         this.flags = flags;
     }
 

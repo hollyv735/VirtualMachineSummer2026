@@ -99,12 +99,21 @@ public class VmxReader {
                 reader.readContent(vmxExt, ext);
                 break;
             case(VmxExt.TYPE_PRELOAD):
-
+                reader = new MyPreloadExtReader();
+                reader.readContent(vmxExt, ext);
+                break;
             case(VmxExt.TYPE_EXPORT):
-
+                reader = new MyExportExtReader();
+                reader.readContent(vmxExt, ext);
+                break;
             case(VmxExt.TYPE_LABEL):
-
+                reader = new MyLabelExtReader();
+                reader.readContent(vmxExt, ext);
+                break;
             case(VmxExt.TYPE_AFFINITY):
+                reader = new MyAffinityExtReader();
+                reader.readContent(vmxExt, ext);
+                break;
         }
     }
 

@@ -3,6 +3,7 @@ package com.kondra.vm.vmx.writers;
 import com.kondra.vm.common.vmx.VmxExt;
 import com.kondra.vm.common.vmx.VmxFile;
 import com.kondra.vm.vmx.ext.*;
+import com.kondra.vm.vmx.readers.MyAffinityExtReader;
 import com.kondra.vm.vmx.readers.MySymbolTableExtReader;
 
 public class MyVmxExtWriter {
@@ -31,12 +32,21 @@ public class MyVmxExtWriter {
                 size = writer.writeContent().length;
                 return size;
             case(VmxExt.TYPE_PRELOAD):
-
+                writer = new MyPreloadExtWriter(vmxExt);
+                size = writer.writeContent().length;
+                return size;
             case(VmxExt.TYPE_EXPORT):
-
+                writer = new MyExportExtWriter(vmxExt);
+                size = writer.writeContent().length;
+                return size;
             case(VmxExt.TYPE_LABEL):
-
+                writer = new MyLabelExtWriter(vmxExt);
+                size = writer.writeContent().length;
+                return size;
             case(VmxExt.TYPE_AFFINITY):
+                writer = new MyAffinityExtWriter(vmxExt);
+                size = writer.writeContent().length;
+                return size;
         }
         return 0;
 
@@ -60,14 +70,21 @@ public class MyVmxExtWriter {
                 header[1] = flags;
                 break;
             case(VmxExt.TYPE_PRELOAD):
-
-            case(VmxExt.TYPE_EXPORT):
-
-            case(VmxExt.TYPE_LABEL):
                 flags = ((MyPreloadExt)vmxExt).getFlags();
                 header[1] = flags;
                 break;
+            case(VmxExt.TYPE_EXPORT):
+                flags = ((MyExportExt)vmxExt).getFlags();
+                header[1] = flags;
+                break;
+            case(VmxExt.TYPE_LABEL):
+                flags = ((MyLabelExt)vmxExt).getFlags();
+                header[1] = flags;
+                break;
             case(VmxExt.TYPE_AFFINITY):
+                flags = ((MyAffinityExt)vmxExt).getFlags();
+                header[1] = flags;
+                break;
         }
 
 
@@ -86,13 +103,13 @@ public class MyVmxExtWriter {
             case(VmxExt.TYPE_SYMTAB):
                 return (new MySymbolTableExtWriter(vmxExt)).writeContent();
             case(VmxExt.TYPE_PRELOAD):
-
+                return (new MyPreloadExtWriter(vmxExt)).writeContent();
             case(VmxExt.TYPE_EXPORT):
-
+                return (new MyExportExtWriter(vmxExt)).writeContent();
             case(VmxExt.TYPE_LABEL):
                 return (new MyLabelExtWriter(vmxExt)).writeContent();
-
             case(VmxExt.TYPE_AFFINITY):
+                return (new MyAffinityExtWriter(vmxExt)).writeContent();
         }
         return null;
     }

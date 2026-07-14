@@ -16,7 +16,17 @@ public class MySymbolTableExtWriter extends MyVmxExtWriter {
 
     @Override
     public byte[] writeContent(){
-        byte[] ext = new byte[((MySymbolTableExt)vmxExt).getNextOffset()-1];
+        int len = ((MySymbolTableExt)vmxExt).getNextOffset()-1;
+        if (len % 4 == 1){
+            len = len + 3;
+        }
+        else if (len % 4 == 2){
+            len = len + 2;
+        }
+        else if (len % 4 == 3){
+            len = len + 1;
+        }
+        byte[] ext = new byte[len];
         List<String> strings = ((MySymbolTableExt)vmxExt).getSymbols();
         int index = 0;
         for(String s: strings){
