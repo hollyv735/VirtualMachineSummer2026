@@ -16,12 +16,18 @@ public class MyLabelExtWriter extends MyVmxExtWriter{
     @Override
     public byte[] writeContent(){
         byte[] bytes = new byte[36];
+        for (int i = 0; i<36; i++){
+            bytes[i] = 0;
+        }
         long time = (((MyLabelExt)vmxExt).getTimestamp()).getTime();
-        writeInt(bytes, 0, (int)(time/1000));
+        VmxWriter.writeInt(bytes, 0, (int)(time/1000));
+        VmxWriter.writeString(bytes, 4, ((MyLabelExt)vmxExt).getLabel());
+        /*
         byte[] string = ((MyLabelExt)vmxExt).getLabel().getBytes();
         for(int i = 0; (i<32); i++){
             bytes[4+i] = string[i];
         }
+         */
         return bytes;
     }
 

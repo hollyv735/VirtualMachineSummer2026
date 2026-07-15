@@ -30,11 +30,8 @@ public class MySymbolTableExtWriter extends MyVmxExtWriter {
         List<String> strings = ((MySymbolTableExt)vmxExt).getSymbols();
         int index = 0;
         for(String s: strings){
-            for(int i = 0; i<s.length(); i++){
-                ext[index] = s.getBytes()[i];
-                index++;
-            }
-            index++;
+            VmxWriter.writeString(ext, index, s);
+            index= index + 1 + s.length();
         }
         return ext;
     }

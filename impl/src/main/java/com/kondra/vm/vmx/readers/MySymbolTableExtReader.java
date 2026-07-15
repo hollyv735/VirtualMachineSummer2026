@@ -14,7 +14,16 @@ public class MySymbolTableExtReader extends MyVmxExtReader {
         HashMap<Integer, String> offsetSymbol = new HashMap<>();
         HashMap<String, Integer> symbolOffset = new HashMap<>();
         int offset = 0;
-        String symbol = "";
+        while (true){
+            String symbol = VmxReader.readString(ext, offset);
+            offsetSymbol.put(offset, symbol);
+            symbolOffset.put(symbol, offset);
+            offset = offset+1+symbol.length();
+            if (offset >= ext.length){
+                break;
+            }
+        }
+                /*"";
         for (int i = 0; i<ext.length; i++){
             if (ext[i]+"" == "\0") {
                 offsetSymbol.put(offset, symbol);
@@ -25,6 +34,8 @@ public class MySymbolTableExtReader extends MyVmxExtReader {
                 symbol += ext[i];
             }
         }
+
+                 */
         ((MySymbolTableExt)vmxExt).setSymbolTable(offsetSymbol, symbolOffset, ext.length);
     }
 

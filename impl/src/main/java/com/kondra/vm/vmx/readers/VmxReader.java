@@ -188,6 +188,20 @@ public class VmxReader {
         return (short) temp;
     }
 
+    public static String readString(byte[] bytes, int offset){
+        StringBuilder stringBuilder = new StringBuilder();
+        int i = offset;
+        while (true){
+            char ch = (char) bytes[i];
+            if(ch == '\0'){
+                break;
+            }
+            stringBuilder.append(ch);
+            i++;
+        }
+        return stringBuilder.toString();
+    }
+
 
 
 

@@ -13,10 +13,7 @@ public class MyLabelExtReader extends MyVmxExtReader{
     @Override
     public void readContent(VmxExt vmxExt, byte[] ext){
         this.ext = ext;
-        String label = "";
-        for(int i = 4; i<ext.length; i++){
-            label = label + ext[i];
-        }
+        String label = VmxReader.readString(ext, 4);
         Date timestamp = new Date((long)(readInt(ext, 0))*1000);
         ((MyLabelExt)vmxExt).setLabel(label);
         ((MyLabelExt)vmxExt).setTimestamp(timestamp);

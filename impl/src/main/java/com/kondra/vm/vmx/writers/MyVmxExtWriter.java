@@ -86,11 +86,6 @@ public class MyVmxExtWriter {
                 header[1] = flags;
                 break;
         }
-
-
-
-
-
         return header;
     }
 

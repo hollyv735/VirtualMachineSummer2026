@@ -111,6 +111,14 @@ public class VmxWriter {
         bytes[offset+1] = (byte)(i>>>8);
     }
 
+    static public void writeString(byte[] bytes, int offset, String s){
+        int len = s.length();
+        for (int i = 0; i<len; i++){
+            bytes[offset + i] = (byte) s.charAt(i);
+        }
+        bytes[offset + len] = '\0';
+    }
+
 
 
 
