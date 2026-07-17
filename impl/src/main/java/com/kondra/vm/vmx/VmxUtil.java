@@ -3,12 +3,17 @@ package com.kondra.vm.vmx;
 import com.kondra.vm.common.Version;
 import com.kondra.vm.common.vmx.VmxExt;
 import com.kondra.vm.common.vmx.VmxFile;
+import com.kondra.vm.common.vmx.ext.Export;
+import com.kondra.vm.common.vmx.ext.Relocation;
+import com.kondra.vm.vmx.ext.*;
 import com.kondra.vm.vmx.readers.VmxReader;
+import com.kondra.vm.vmx.writers.VmxWriter;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-/*
+
 public class VmxUtil {
 
     private static String typeString(int i){
@@ -70,27 +75,84 @@ public class VmxUtil {
         System.out.println("========================================");
         List<VmxExt> extensions = file.getExtensions();
         System.out.println("required preloads:");
+        List<Integer> offsets = null;
+        MySymbolTableExt symTab = null;
         for(VmxExt e: extensions) {
             if (e.getType() == VmxExt.TYPE_PRELOAD){
-                ((MyPreloadExt)e).printSymbols();
+                offsets = ((MyPreloadExt)e).getSymbolOffsets();
             }
+            if (e.getType() == VmxExt.TYPE_SYMTAB){
+                symTab = (MySymbolTableExt) e;
+            }
+        }
+        for (Integer o: offsets){
+            System.out.print(symTab.getSymbol(o));
         }
         System.out.println("========================================");
     }
     public static void importSymbols(VmxFile file){
+        System.out.println("========================================");
+        System.out.println("imported symbols: ");
+        List<VmxExt> extensions = file.getExtensions();
+        List<Relocation> relocations = null;
+        List<Relocation> dynamicRelocations = new ArrayList<>();
+        MySymbolTableExt symTab = null;
+
+        for(VmxExt e: extensions) {
+            if (e.getType() == VmxExt.TYPE_RELOC) {
+                for(int i = 0; i<4; i++) {
+                    relocations = ((MyRelocationExt) e).getRelocations(i);
+                    for (Relocation r : relocations) {
+                        if (r.isDynamic()) {
+                            dynamicRelocations.add(r);
+                        }
+                    }
+                }
+            }
+            if (e.getType() == VmxExt.TYPE_SYMTAB){
+                symTab = (MySymbolTableExt) e;
+            }
+        }
+        List<String> print = new ArrayList<>();
+        for (Relocation r : dynamicRelocations){
+            String s = symTab.getSymbol(r.getDynamicSymbolOffset());
+            if (!print.contains(s)){
+                print.add(s);
+            }
+        }
+        for(String s : print){
+            System.out.print(s);
+        }
 
     }
     public static void exportSymbols(VmxFile file){
-
+        System.out.println("========================================");
+        System.out.println("exported symbols: ");
+        List<VmxExt> extensions = file.getExtensions();
+        List<Export> exports = null;
+        MySymbolTableExt symTab = null;
+        for(VmxExt e: extensions) {
+            if (e.getType() == VmxExt.TYPE_EXPORT) {
+                exports = ((MyExportExt)e).getExports();
+            }
+            if (e.getType() == VmxExt.TYPE_SYMTAB){
+                symTab = (MySymbolTableExt) e;
+            }
+        }
+        for (Export e : exports){
+            System.out.print(symTab.getSymbol(e.getSymbolOffset()));
+        }
+        System.out.println("========================================");
     }
     //parameters required
-    public static void output(VmxFile file, String outputFile){
+    public static VmxFile output(VmxFile file, String outputFile){ //finish
+        VmxWriter writer = new VmxWriter((MyVmxFile) file);
+        return null;
+    }
+    public static void version(VmxFile file, String version){ //finish
 
     }
-    public static void version(VmxFile file, String version){
-
-    }
-    public static void build(VmxFile file, String num){
+    public static void build(VmxFile file, String num){ //finish
 
     }
     public static void label(VmxFile file, String str){
@@ -207,25 +269,28 @@ public class VmxUtil {
         if(exportSymbol){
             exportSymbols(vmxFile);
         }
-        if (version != null){
-            version(vmxFile, version);
-        }
         if (output != null){
-            output(vmxFile, output);
+            VmxFile newVmxFile = output(vmxFile, output);
+            if (build != null){
+                build(newVmxFile, build);
+            }
+            if (label != null){
+                label(newVmxFile, label);
+            }
+            if (version != null){
+                version(newVmxFile, version);
+            }
         }
-        if (build != null){
+        else if (build != null){
             build(vmxFile, build);
         }
-        if (label != null){
+        else if (label != null){
             label(vmxFile, label);
         }
-
-
+        else if (version != null){
+            version(vmxFile, version);
+        }
     }
-
-
-
-
 }
 
- */
+
