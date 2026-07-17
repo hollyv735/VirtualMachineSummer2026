@@ -86,7 +86,7 @@ public class VmxUtil {
             }
         }
         for (Integer o: offsets){
-            System.out.print(symTab.getSymbol(o));
+            System.out.println(symTab.getSymbol(o));
         }
         System.out.println("========================================");
     }
@@ -121,7 +121,7 @@ public class VmxUtil {
             }
         }
         for(String s : print){
-            System.out.print(s);
+            System.out.println(s);
         }
 
     }
@@ -140,24 +140,36 @@ public class VmxUtil {
             }
         }
         for (Export e : exports){
-            System.out.print(symTab.getSymbol(e.getSymbolOffset()));
+            System.out.println(symTab.getSymbol(e.getSymbolOffset()));
         }
         System.out.println("========================================");
     }
     //parameters required
-    public static VmxFile output(VmxFile file, String outputFile){ //finish
+    public static void output(VmxFile file, String outputFile){
         VmxWriter writer = new VmxWriter((MyVmxFile) file);
-        return null;
+        File pathway = new File(outputFile);
+        writer.write(pathway);
+        //System.out.println("file saved to " + outputFile);
     }
     public static void version(VmxFile file, String version){ //finish
+        //System.out.println("setting version to " + version);
+        String[] majorMinor = version.split("\\.");
+        file.getVersion().setMajor(Integer.parseInt(majorMinor[0]));
+        file.getVersion().setMajor(Integer.parseInt(majorMinor[1]));
+
 
     }
-    public static void build(VmxFile file, String num){ //finish
-
+    public static void build(VmxFile file, String num){
+        try {
+            //System.out.println("setting build num to " + num);
+            file.getVersion().setBuildNum(Integer.parseInt(num));
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
+        }
     }
     public static void label(VmxFile file, String str){
+        //System.out.println("setting label to " + str);
         List<VmxExt> extensions = file.getExtensions();
-        System.out.println("required preloads:");
         for(VmxExt e: extensions) {
             if (e.getType() == VmxExt.TYPE_LABEL){
                 ((MyLabelExt)e).setLabel(str);
@@ -222,28 +234,29 @@ public class VmxUtil {
                 if(args.length==i+1){
                     throw new RuntimeException("no parameter listed");
                 }
-                version = args[i++];
+                version = args[++i];
 
             }
-            else if(args[i].equals("o")){
+            else if(args[i].equals("-o")){
                 if(args.length==i+1){
                     throw new RuntimeException("no parameter listed");
                 }
-                output = args[i++];
+                output = args[++i];
             }
             else if(args[i].contains("build")){
                 if(args.length==i+1){
                     throw new RuntimeException("no parameter listed");
                 }
-                build = args[i++];
+                build = args[++i];
             }
             else if(args[i].contains("label")){
                 if(args.length==i+1){
                     throw new RuntimeException("no parameter listed");
                 }
-                label = args[i++];
+                label = args[++i];
             }
             else {
+                System.out.println(args[i]);
                 throw new RuntimeException("string not recognized");
             }
         }
@@ -270,25 +283,28 @@ public class VmxUtil {
             exportSymbols(vmxFile);
         }
         if (output != null){
-            VmxFile newVmxFile = output(vmxFile, output);
-            if (build != null){
-                build(newVmxFile, build);
-            }
             if (label != null){
-                label(newVmxFile, label);
+                label(vmxFile, label);
+            }
+            if (build != null){
+                build(vmxFile, build);
             }
             if (version != null){
-                version(newVmxFile, version);
+                version(vmxFile, version);
             }
-        }
-        else if (build != null){
-            build(vmxFile, build);
-        }
-        else if (label != null){
-            label(vmxFile, label);
-        }
-        else if (version != null){
-            version(vmxFile, version);
+            output(vmxFile, output);
+        } else {
+            if (build != null){
+                build(vmxFile, build);
+            }
+            if (label != null){
+                label(vmxFile, label);
+            }
+            if (version != null){
+                version(vmxFile, version);
+            }
+            VmxWriter writer = new VmxWriter((MyVmxFile) vmxFile);
+            writer.write(file);
         }
     }
 }
