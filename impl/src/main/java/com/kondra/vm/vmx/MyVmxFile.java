@@ -43,7 +43,12 @@ public class MyVmxFile implements VmxFile {
 
     @Override
     public VmxExt getExtension(int i) {
-        return extensions.get(i);
+        for (VmxExt e : getExtensions()){
+            if (e.getType() == i){
+                return e;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -87,14 +92,6 @@ public class MyVmxFile implements VmxFile {
         return sections;
     }
 
-    public VmxExt getExt(int i){
-        for (VmxExt e : getExtensions()){
-            if (e.getType() == i){
-                return e;
-            }
-        }
-        return null;
 
-    }
 
 }
