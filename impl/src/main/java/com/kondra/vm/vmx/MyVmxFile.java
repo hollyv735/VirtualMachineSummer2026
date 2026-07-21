@@ -87,4 +87,14 @@ public class MyVmxFile implements VmxFile {
         return sections;
     }
 
+    public VmxExt getExt(int i){
+        for (VmxExt e : getExtensions()){
+            if (e.getType() == i){
+                return e;
+            }
+        }
+        return null;
+
+    }
+
 }

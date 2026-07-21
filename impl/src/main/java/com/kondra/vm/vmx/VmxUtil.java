@@ -60,31 +60,18 @@ public class VmxUtil {
         System.out.println("Version: " + version.getMajor()+"."+version.getMinor());
         System.out.println("Build Number: " + buildNum);
         //check for label extension
-        List<VmxExt> extensions = file.getExtensions();
-        for(VmxExt e: extensions) {
-            if (e.getType() == VmxExt.TYPE_LABEL){
-                System.out.println("Label Extension:");
-                System.out.println("Timestamp:" + ((MyLabelExt)e).getTimestamp());
-                System.out.println("Label:" + ((MyLabelExt)e).getLabel());
-            }
-        }
+        MyLabelExt label = (MyLabelExt) file.getExtension(VmxExt.TYPE_LABEL);
+        System.out.println("Label Extension:");
+        System.out.println("Timestamp:" + label.getTimestamp());
+        System.out.println("Label:" + label.getLabel());
         System.out.println("========================================");
     }
 
     public static void preload(VmxFile file){
         System.out.println("========================================");
-        List<VmxExt> extensions = file.getExtensions();
         System.out.println("required preloads:");
-        List<Integer> offsets = null;
-        MySymbolTableExt symTab = null;
-        for(VmxExt e: extensions) {
-            if (e.getType() == VmxExt.TYPE_PRELOAD){
-                offsets = ((MyPreloadExt)e).getSymbolOffsets();
-            }
-            if (e.getType() == VmxExt.TYPE_SYMTAB){
-                symTab = (MySymbolTableExt) e;
-            }
-        }
+        List<Integer> offsets = ((MyPreloadExt)file.getExtension(VmxExt.TYPE_PRELOAD)).getSymbolOffsets();
+        MySymbolTableExt symTab = (MySymbolTableExt) file.getExtension(VmxExt.TYPE_SYMTAB);
         for (Integer o: offsets){
             System.out.println(symTab.getSymbol(o));
         }
@@ -94,23 +81,16 @@ public class VmxUtil {
         System.out.println("========================================");
         System.out.println("imported symbols: ");
         List<VmxExt> extensions = file.getExtensions();
+        MyRelocationExt reloc = ((MyRelocationExt)file.getExtension(VmxExt.TYPE_RELOC));
         List<Relocation> relocations = null;
         List<Relocation> dynamicRelocations = new ArrayList<>();
-        MySymbolTableExt symTab = null;
-
-        for(VmxExt e: extensions) {
-            if (e.getType() == VmxExt.TYPE_RELOC) {
-                for(int i = 0; i<4; i++) {
-                    relocations = ((MyRelocationExt) e).getRelocations(i);
-                    for (Relocation r : relocations) {
-                        if (r.isDynamic()) {
-                            dynamicRelocations.add(r);
-                        }
-                    }
+        MySymbolTableExt symTab = (MySymbolTableExt) file.getExtension(VmxExt.TYPE_SYMTAB);
+        for(int i = 0; i<4; i++) {
+            relocations = ((MyRelocationExt) reloc).getRelocations(i);
+            for (Relocation r : relocations) {
+                if (r.isDynamic()) {
+                    dynamicRelocations.add(r);
                 }
-            }
-            if (e.getType() == VmxExt.TYPE_SYMTAB){
-                symTab = (MySymbolTableExt) e;
             }
         }
         List<String> print = new ArrayList<>();
@@ -129,21 +109,14 @@ public class VmxUtil {
         System.out.println("========================================");
         System.out.println("exported symbols: ");
         List<VmxExt> extensions = file.getExtensions();
-        List<Export> exports = null;
-        MySymbolTableExt symTab = null;
-        for(VmxExt e: extensions) {
-            if (e.getType() == VmxExt.TYPE_EXPORT) {
-                exports = ((MyExportExt)e).getExports();
-            }
-            if (e.getType() == VmxExt.TYPE_SYMTAB){
-                symTab = (MySymbolTableExt) e;
-            }
-        }
+        List<Export> exports = ((MyExportExt)file.getExtension(VmxExt.TYPE_EXPORT)).getExports();
+        MySymbolTableExt symTab = (MySymbolTableExt) file.getExtension(VmxExt.TYPE_SYMTAB);
         for (Export e : exports){
             System.out.println(symTab.getSymbol(e.getSymbolOffset()));
         }
         System.out.println("========================================");
     }
+
     //parameters required
     public static void output(VmxFile file, String outputFile){
         VmxWriter writer = new VmxWriter((MyVmxFile) file);
